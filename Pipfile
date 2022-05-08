@@ -8,6 +8,7 @@ django = "*"
 django-debug-toolbar = "*"
 model-bakery = "*"
 faker = "*"
+djangorestframework = "*"
 
 [dev-packages]
 

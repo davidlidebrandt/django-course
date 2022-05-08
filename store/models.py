@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 class Collection(models.Model):
     title = models.CharField(max_length=255)
@@ -11,8 +12,8 @@ class Product(models.Model):
         ordering = ['title']       # orders the products on the admin site
 
     title = models.CharField(max_length=255)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=6, decimal_places=3)
+    description = models.TextField(null=True, blank=True)
+    price = models.DecimalField(max_digits=6, decimal_places=3, validators=[MinValueValidator(1)])
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT)

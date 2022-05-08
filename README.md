@@ -31,5 +31,9 @@ CREATE SUPER USER ADMIN PANEL
 
 python manage.py createsuperuser
 
+DJANGO REST FRAMEWORK
+
+pipenv install djangorestframework
+
 
 
