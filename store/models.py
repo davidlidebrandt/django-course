@@ -3,10 +3,13 @@ from django.db import models
 class Collection(models.Model):
     title = models.CharField(max_length=255)
     
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.title}"
 
 class Product(models.Model):
+    class Meta:
+        ordering = ['title']       # orders the products on the admin site
+
     title = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=3)

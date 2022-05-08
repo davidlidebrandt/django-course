@@ -1,11 +1,35 @@
+from itertools import product
 from django.contrib import admin
+from django.http import HttpRequest
+from django.db.models.aggregates import Count
 from . import models
 
 class CollectionAdmin(admin.ModelAdmin):
+    list_display = ['title', 'products_count']
     fields = ['title']
 
+    @admin.display(ordering='products_count')
+    def products_count(self, collection):
+        return collection.products_count
+
+    def get_queryset(self, request: HttpRequest):
+        return super().get_queryset(request).annotate(
+            products_count= Count('product')
+        )
+
 class ProductAdmin(admin.ModelAdmin):
+    list_display = ['title', 'price', 'quantity_status', 'collection']
+    list_editable = ['price']
+    list_per_page = 10
     fields = ['title', 'description', 'price', 'inventory', 'collection']
+    list_select_related = ['collection']
+
+    
+    @admin.display(ordering='inventory')
+    def quantity_status(self, product):
+        if product.inventory < 10:
+            return 'Warning'
+        return 'OK'
 
 class CustomerAdmin(admin.ModelAdmin):
     fields = ['first_name', 'last_name', 'phone', 'email', 'birth_date', 'membership']
