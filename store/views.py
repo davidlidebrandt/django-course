@@ -9,8 +9,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from . models import Collection, Product
-from . serializers import CollectionSerializer, ProductSerializer
+from . models import Collection, Product, Review
+from . serializers import CollectionSerializer, ProductSerializer, ReviewSerializer
 from store import serializers
 
 # class ProductsList(APIView):
@@ -27,7 +27,14 @@ from store import serializers
 
 class ProductsList(ListCreateAPIView):
     def get_queryset(self):
-        return Product.objects.select_related('collection').all()
+        queryset = Product.objects.select_related('collection').all()
+        try:
+            collection_id = self.request.query_params['collection_id']
+            if collection_id is not None:
+                queryset = queryset.filter(collection_id=collection_id)
+        except:
+            pass
+        return queryset
     
     def get_serializer_class(self):
         return ProductSerializer
@@ -88,9 +95,22 @@ class ProductDetail(RetrieveUpdateDestroyAPIView):
         if product.orderitem_set.count() > 0:
             return Response({"error": "Product is present in orders, cannot be deleted"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
         product.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT) 
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
+class ReviewList(ListCreateAPIView):
+    def get_queryset(self):
+        return Review.objects.all()
     
+    def get_serializer_class(self):
+        return ReviewSerializer
+
+    def get_serializer_context(self):
+        return {'request': self.request}
+
+    def get(self, request, pk):
+        queryset = Review.objects.filter(product_id=pk)
+        serializer = ReviewSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 # @api_view(['GET', 'PUT', 'DELETE'])

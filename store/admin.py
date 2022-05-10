@@ -6,6 +6,14 @@ from django.http import HttpRequest
 from django.db.models.aggregates import Count
 from . import models
 
+class ReviewAdmin(admin.TabularInline):
+    model = models.Review
+    fields = ['product', 'user', 'description', 'date']
+    readonly_fields = ['user', 'date']
+
+    def __str__(self) -> str:
+        return self.user
+
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ['title', 'products_count']
     fields = ['title']
@@ -34,6 +42,7 @@ class InventoryFilter(admin.SimpleListFilter):
             return queryset.filter(inventory__lt=10)
 
 class ProductAdmin(admin.ModelAdmin):
+    inlines = [ReviewAdmin]
     autocomplete_fields = ['collection']
     actions = ['clear_inventory']
     list_display = ['title', 'price', 'quantity_status', 'collection']

@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.contrib.auth.models import User
 
 class Collection(models.Model):
     title = models.CharField(max_length=255)
@@ -91,4 +92,10 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.product}"
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    description = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
 

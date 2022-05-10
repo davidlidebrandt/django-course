@@ -1,5 +1,6 @@
+from dataclasses import fields
 from rest_framework import serializers
-from . models import Collection, Product
+from . models import Collection, Product, Review
 
 class CollectionSerializer(serializers.ModelSerializer):
     # id = serializers.IntegerField(read_only=True)
@@ -21,3 +22,8 @@ class ProductSerializer(serializers.ModelSerializer):
     # collection_name = serializers.StringRelatedField(source='collection')
     # collection = CollectionSerializer()
     #collection = serializers.HyperlinkedRelatedField(queryset= Collection.objects.all(), view_name='collection')
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'product', 'user', 'description', 'date']
