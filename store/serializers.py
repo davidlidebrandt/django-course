@@ -1,10 +1,14 @@
 from rest_framework import serializers
 from . models import Collection, Product
 
-class CollectionSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    title = serializers.CharField(max_length=255)
-
+class CollectionSerializer(serializers.ModelSerializer):
+    # id = serializers.IntegerField(read_only=True)
+    # title = serializers.CharField(max_length=255)
+    class Meta:
+        model = Collection
+        fields = ['id', 'title', 'number_of_products']
+    
+    number_of_products = serializers.IntegerField(read_only=True)
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
