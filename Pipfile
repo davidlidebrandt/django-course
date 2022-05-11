@@ -10,6 +10,8 @@ model-bakery = "*"
 faker = "*"
 djangorestframework = "*"
 django-filter = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 

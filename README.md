@@ -39,4 +39,9 @@ DJANGO FILTER
 
 pipenv install django-filter
 
+DJOSER
+
+pipenv install djoser
+pipenv install djangorestframework_simplejwt
+
 
