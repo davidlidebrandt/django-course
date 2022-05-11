@@ -35,5 +35,8 @@ DJANGO REST FRAMEWORK
 
 pipenv install djangorestframework
 
+DJANGO FILTER
+
+pipenv install django-filter
 
 

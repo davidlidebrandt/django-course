@@ -9,6 +9,7 @@ django-debug-toolbar = "*"
 model-bakery = "*"
 faker = "*"
 djangorestframework = "*"
+django-filter = "*"
 
 [dev-packages]
 
