@@ -1,6 +1,11 @@
 from dataclasses import fields
 from rest_framework import serializers
 from . models import Collection, Product, Review
+from djoser.serializers import UserSerializer as BaseUserSerializer
+
+class UserSerializer(BaseUserSerializer):
+    class Meta(BaseUserSerializer.Meta):
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
 
 class CollectionSerializer(serializers.ModelSerializer):
     # id = serializers.IntegerField(read_only=True)

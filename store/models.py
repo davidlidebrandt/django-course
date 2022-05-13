@@ -3,6 +3,11 @@ from django.core.validators import MinValueValidator
 from django.contrib.auth.models import User
 from uuid import uuid4
 
+class UserProfile(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    user = models.OneToOneField(User, on_delete=models.PROTECT, primary_key=True)
+
 class Collection(models.Model):
     title = models.CharField(max_length=255)
     

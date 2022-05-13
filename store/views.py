@@ -12,7 +12,7 @@ from rest_framework.pagination import PageNumberPagination
 from store.filters import ProductFilter
 from . models import Collection, Product, Review
 from . serializers import CollectionSerializer, ProductSerializer, ReviewSerializer
-from store import serializers
+
 
 # class ProductsList(APIView):
 #     def get(self, request):
