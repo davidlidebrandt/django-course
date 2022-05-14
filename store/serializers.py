@@ -1,6 +1,6 @@
 from dataclasses import fields
 from rest_framework import serializers
-from . models import Collection, Product, Review
+from . models import Collection, Order, OrderItem, Product, Review
 from djoser.serializers import UserSerializer as BaseUserSerializer
 
 class UserSerializer(BaseUserSerializer):
@@ -32,3 +32,14 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ['id', 'product', 'user', 'description', 'date']
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = ['order', 'product', 'quantity', 'unit_price']
+
+class OrderSerializer(serializers.ModelSerializer):
+    orderitem_set = OrderItemSerializer(many=True)
+    class Meta:
+        model = Order
+        fields = ['id', 'customer', 'orderitem_set']

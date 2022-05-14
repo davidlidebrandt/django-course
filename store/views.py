@@ -10,8 +10,19 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.pagination import PageNumberPagination
 from store.filters import ProductFilter
-from . models import Collection, Product, Review
-from . serializers import CollectionSerializer, ProductSerializer, ReviewSerializer
+from store.permissions import ProductPermission
+from . models import Collection, Order, Product, Review
+from . serializers import CollectionSerializer, OrderSerializer, ProductSerializer, ReviewSerializer
+
+class OrderList(ListCreateAPIView):
+    def get_queryset(self):
+        return Order.objects.prefetch_related('orderitem_set').all()
+
+    def get_serializer_class(self):
+        return OrderSerializer
+    
+    def get_serializer_context(self):
+        return {'request': self.request}
 
 
 # class ProductsList(APIView):
@@ -27,6 +38,7 @@ from . serializers import CollectionSerializer, ProductSerializer, ReviewSeriali
 #         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class ProductsList(ListCreateAPIView):
+    permission_classes = [ProductPermission]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ProductFilter
     search_fields = ['title', 'description']
